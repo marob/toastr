@@ -329,7 +329,11 @@
                         progressBar.maxHideTime = parseFloat(options.timeOut);
                         progressBar.hideEta = new Date().getTime() + progressBar.maxHideTime;
                         if (options.progressBar) {
-                            progressBar.intervalId = setInterval(updateProgress, 10);
+                            updateProgress();
+                            // Compute delay depending on notification timeOut to prevent too many refreshes.
+                            // 300 is an arbitrary value based on the default width of a toast (progressBar should then be updated once for each pixel)
+                            var delay = Math.max(10, progressBar.maxHideTime / 300);
+                            progressBar.intervalId = setInterval(updateProgress, delay);
                         }
                     }
                 }
